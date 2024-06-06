@@ -19,8 +19,8 @@ json forward_request(const std::string& url, const json& request_json)
     std::string readBuffer;
 
     curl = curl_easy_init();
-    if(curl) {
-        struct curl_slist *headers = NULL;
+    if (curl) {
+        struct curl_slist* headers = NULL;
         headers = curl_slist_append(headers, "Content-Type: application/json");
 
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -32,7 +32,7 @@ json forward_request(const std::string& url, const json& request_json)
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
 
-        if(res != CURLE_OK)
+        if (res != CURLE_OK)
             return json::parse("{\"error\":\"Request failed\"}");
     }
     return json::parse(readBuffer);
@@ -49,17 +49,18 @@ int main()
     };
 
     CROW_ROUTE(app, "/api/<path>")
-    ([&routing_table](const crow::request& req, const std::string& path){
+        ([&routing_table](const crow::request& req, const std::string& path) {
         auto iter = routing_table.find("/api/" + path);
         if (iter != routing_table.end()) {
             std::string backend_url = iter->second;
             json request_json = json::parse(req.body);
             json response_json = forward_request(backend_url, request_json);
             return crow::response(response_json.dump());
-        } else {
+        }
+        else {
             return crow::response(404, "Not Found");
         }
-    });
+            });
 
     app.port(8080).multithreaded().run();
 }
