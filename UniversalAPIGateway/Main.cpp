@@ -44,8 +44,8 @@ int main()
 
     // Define the routing table
     std::unordered_map<std::string, std::string> routing_table = {
-        {"/api/service1", "http://backend_service1/api/endpoint"},
-        {"/api/service2", "http://backend_service2/api/endpoint"}
+        {"/api/service1", "https://haatehaatapi.tuhidulhossain.com/WeatherForecast"},
+        //{"/api/service2", "http://backend_service2/api/endpoint"}
     };
 
     CROW_ROUTE(app, "/api/<path>")
